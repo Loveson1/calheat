@@ -1,5 +1,5 @@
 export  function getCalendarDays(year, month) {
-    
+
   const firstDayOfMonth = new Date(year, month, 1);
   const LastDayOfMonth = new Date(year, month + 1, 0);
   const daysInMonth = LastDayOfMonth.getDate();
@@ -45,3 +45,4 @@ export  function getCalendarDays(year, month) {
 //   for (let i = 0; i < startDay; i++) {
 //     calendarDays.push(null);
 //   }
+// const days = Array.from({ length: 31 }, (_, i) => i + 1);

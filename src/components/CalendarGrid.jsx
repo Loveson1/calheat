@@ -3,47 +3,47 @@ import { useEffect, useState } from "react";
 import { getOccupancyForDate } from "../utils/occupancy";
 import { getHeatMapColor } from "../utils/heatmap";
 
-function CalendarGrid() {
+function CalendarGrid({ bookings, selection, setSelection, from, to }) {
+
   const weekDays = ["Sun", "Mon", "Tue", "wed", "Thu", "Fri", "Sat"];
   const [currentDate, setCurrentDate] = useState(new Date());
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
   const monthName = currentDate.toLocaleString("default", { month: "long" });
-  const calendarDays = getCalendarDays(year, month);
-
-  // async function for fetching the json data
-  const [bookings, setBookings] = useState([]);
-  useEffect(() => {
-    async function fetchBook() {
-      const response = await fetch("/bookings.json");
-      const data = await response.json();
-      setBookings(data);
-    }
-
-    fetchBook();
-  }, []);
+  const calendarDays = getCalendarDays(year, month,);
 
   // logic to handle current, previous and next month
   const handleToday = () => {
     setCurrentDate(new Date());
   };
   const handlePreviousMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1),
+    );
   };
   const handleNextMonth = () => {
-    setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
+    setCurrentDate(
+      new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1),
+    );
   };
 
-  // const days = Array.from({ length: 31 }, (_, i) => i + 1);
-  // logic for handling selection
-  const [selection, setSelection] = useState({
-    start:null,
-    end:null,
-    isdragging:false
-  })
+  // logic to make drag still work even when user drags outside the cell
+  useEffect(() => {
+    const handleMouseUp = () => {
+      setSelection((prev) => ({
+        ...prev,
+        isDragging: false,
+      }));
+    };
+
+    window.addEventListener("mouseup", handleMouseUp);
+    return () => {
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, []);
 
   return (
-    <>
+    <div>
       <h1>
         {monthName} {year}
       </h1>
@@ -59,17 +59,44 @@ function CalendarGrid() {
       </div>
       <div className="calendar-grid">
         {calendarDays.map((day, index) => {
+          const isSelected =
+            selection.start &&
+            selection.end &&
+            day.date >= from && day.date <= to;
+
           const occupancy = getOccupancyForDate(day.date, bookings);
-          const backgroundColor = day.isCurrentMonth
-            ? getHeatMapColor(occupancy)
-            : "#4a4a4a";
+          const backgroundColor = isSelected
+            ? "#fde68a"
+            : day.isCurrentMonth
+              ? getHeatMapColor(occupancy)
+              : "#4a4a4a";
 
           return (
             <div
-              className="day-cell"
+             
               key={index}
               className={`${day.isCurrentMonth ? "day-cell" : "faded-cell"} text-color`}
               style={{ backgroundColor }}
+              onMouseDown={() => {
+                setSelection({
+                  start: day.date,
+                  end: day.date,
+                  isDragging: true,
+                });
+              }}
+              onMouseUp={() => {
+                setSelection((prev) => ({
+                  ...prev,
+                  isDragging: false,
+                }));
+              }}
+              onMouseEnter={() => {
+                if (!selection.isDragging) return;
+                setSelection((prev) => ({
+                  ...prev,
+                  end: day.date,
+                }));
+              }}
             >
               {day.dayNumber}
               <br className="" />
@@ -78,7 +105,7 @@ function CalendarGrid() {
           );
         })}
       </div>
-    </>
+    </div>
   );
 }
 

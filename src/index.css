@@ -79,6 +79,8 @@ button:focus-visible {
   padding-inline: 16px;
   padding-block: 8px;
   min-height: 20px;
+  cursor: pointer;
+  user-select: none;
 }
 
 .faded-cell {
@@ -87,8 +89,10 @@ button:focus-visible {
   padding-block: 8px;
   min-height: 20px;
   color: #4a4a4a;
+   cursor: pointer;
+  user-select: none;
 }
 
 .text-color {
-  color: rgb(0, 0, 52);
+  color: rgb(62, 43, 18);
 }
