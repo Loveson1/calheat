@@ -1,6 +1,4 @@
 :root {
-
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -29,7 +27,6 @@ p {
 
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
@@ -41,10 +38,6 @@ button {
 }
 button:hover {
   background-color: rgb(220, 235, 255);
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
 .weekdays,
@@ -90,8 +83,6 @@ button:focus-visible {
 
   height: calc(100vh - 10px);
   overflow: hidden;
-
- 
 }
 
 .flex-end {
@@ -100,7 +91,7 @@ button:focus-visible {
   justify-self: end;
 }
 
-.flex-1{
+.flex-1 {
   flex-basis: 1;
   flex-grow: 1;
 }
@@ -133,7 +124,6 @@ button:focus-visible {
   padding-inline: 20px;
   padding-block: 10px;
   width: 100%;
-
 }
 
 .mb {
@@ -141,12 +131,7 @@ button:focus-visible {
 }
 
 .side-panel-scroll {
-
-  height: 100%; 
+  height: 100%;
   overflow-y: scroll;
-  width: 30%; 
-  
+  width: 30%;
 }
-
-
-

@@ -22,7 +22,9 @@ export function getAverageMonthlyOccupancy(bookings, calendarDays) {
     total += getOccupancyForDate(day.date, bookings);
   });
 
-  return ((total / calendarDays.length).toFixed(2) / totalRooms) * 100
+  let avg = ((total / calendarDays.length) / totalRooms) * 100
+
+  return (avg).toFixed(2) 
 }
 
 
