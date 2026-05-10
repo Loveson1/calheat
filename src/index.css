@@ -128,10 +128,15 @@ button:hover {
 
 .mb {
   margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: rgb(17, 47, 86) 1px solid;
+  
 }
 
 .side-panel-scroll {
   height: 100%;
   overflow-y: scroll;
   width: 30%;
+  border-left: rgb(17, 47, 86) 1px solid;
+  padding-left: 10px;
 }
