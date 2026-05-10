@@ -14,17 +14,23 @@ export function getMonthlyBooking(bookings) {
   return monthlyBooking;
 }
 
-export function getAverageMonthlyOccupancy(bookings, calendarDays) {
+export function getAverageMonthlyOccupancy(bookings, calendarDays, currentMonth) {
   let total = 0;
- const  totalRooms = 10
+  const totalRooms = 10;
 
-  calendarDays.forEach((day) => {
+  // Filter to only count days in the target month
+  const monthDays = calendarDays.filter(day => day.date.getMonth() === currentMonth);
+
+  monthDays.forEach((day) => {
     total += getOccupancyForDate(day.date, bookings);
   });
 
-  let avg = ((total / calendarDays.length) / totalRooms) * 100
+  // Calculate based only on the days of that month
+  let avg = (total / monthDays.length / totalRooms) * 100;
 
-  return (avg).toFixed(2) 
+  return avg.toFixed(2); 
 }
 
 
+
+  

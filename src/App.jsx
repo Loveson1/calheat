@@ -84,7 +84,7 @@ function App() {
           <b>Calheat</b>
         </div>
         <div className="flex-end">
-          <div className="filters">
+          <div>
             <select
               value={filters.roomType}
               onChange={(e) =>

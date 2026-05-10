@@ -76,7 +76,7 @@ function CalendarGrid({ bookings, selection, setSelection, from, to }) {
 
   return (
     <div ref={calendarRef}>
-      <Stats bookings={monthBookings} calendarDays={calendarDays} />
+      <Stats bookings={monthBookings} calendarDays={calendarDays} currentMonth={month}/>
 
       <div className="flex-center">
         <h1>

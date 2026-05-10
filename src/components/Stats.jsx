@@ -1,10 +1,10 @@
 import { getMonthlyRevenue, getMonthlyBooking, getAverageMonthlyOccupancy  } from "../utils/stat";
 
 
-export default function Stats({ bookings,  calendarDays }) {
+export default function Stats({ bookings,  calendarDays, currentMonth }) {
   const monthlyReveneu = getMonthlyRevenue(bookings);
   const monthlyBooking = getMonthlyBooking(bookings);
-  const avgOcc = getAverageMonthlyOccupancy(bookings, calendarDays);
+  const avgOcc = getAverageMonthlyOccupancy(bookings, calendarDays, currentMonth);
  
   return (
     <div className="flex-btw">
@@ -24,7 +24,7 @@ export default function Stats({ bookings,  calendarDays }) {
     <small className="opa-50">   Avg. Occupancy  
       </small> 
       <br  />
-      {avgOcc}%
+      {avgOcc}% 
       </h2>
     </div>
   );
