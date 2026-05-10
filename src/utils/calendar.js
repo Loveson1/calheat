@@ -7,6 +7,8 @@ export  function getCalendarDays(year, month) {
   const previousMonthLastDay = new Date(year, month, 0).getDate();
   let nextMonthDay = 1;
 
+  
+
   const calendarDays = [];
 
 // logic for the previous month days used as filler month
@@ -41,8 +43,4 @@ export  function getCalendarDays(year, month) {
   return calendarDays;
 }
 
-//   const calendarDays = [];
-//   for (let i = 0; i < startDay; i++) {
-//     calendarDays.push(null);
-//   }
-// const days = Array.from({ length: 31 }, (_, i) => i + 1);
+

@@ -11,7 +11,7 @@ export default function BookingPanel({
     return (
       <div>
         <h2>Bookings</h2>
-        <p>No date selected</p>
+        <p className="card">No date selected</p>
       </div>
     );
   }
@@ -29,26 +29,48 @@ export default function BookingPanel({
 
   return (
     <div>
-      <h2 className="">Bookings</h2>
-      {selectedBookings.map((booking) => {
-        const checkIn = new Date(booking.checkIn);
-        const checkOut = new Date(booking.checkOut);
+      <h2>Bookings</h2>
+      {selectedBookings.length === 0 ? (
+        <div className="card">
+          <p>No bookings found for selected date range.</p>
+        </div>
+      ) : (
+        selectedBookings.map((booking) => {
+          const checkIn = new Date(booking.checkIn);
+          const checkOut = new Date(booking.checkOut);
 
-        const nights = (checkOut - checkIn) / (1000 * 60 * 60 * 24);
-        return (
-          <div key={booking.id}>
-            <p className="">Guest: {booking.guestName}</p>
-            <p className="">Room - {booking.roomNumber}</p>
-            <p className="">
-              CheckIn: {booking.checkIn} - CheckOut: {booking.checkOut}
-            </p>
-            <p className="">
-             {nights} Nights 
-            </p>
-            <p>Status: {booking.status}</p>
-          </div>
-        );
-      })}
+          const nights = (checkOut - checkIn) / (1000 * 60 * 60 * 24);
+
+          return (
+            <div key={booking.id} className="card">
+              <p className="">
+                Guest:{" "}
+                <span style={{ color: "whitesmoke" }}>{booking.guestName}</span>
+              </p>
+              <p className="">
+                Room Number:{" "}
+                <span style={{ color: "whitesmoke" }}>
+                  {" "}
+                  {booking.roomNumber}
+                </span>
+              </p>
+              <p className="">
+                CheckIn:{" "}
+                <span style={{ color: "green" }}>{booking.checkIn}</span> -
+                CheckOut:{" "}
+                <span style={{ color: "green" }}>{booking.checkOut}</span>
+              </p>
+              <p className="">
+                Night Span:{" "}
+                <span style={{ color: "whitesmoke" }}>{nights} Nights </span>
+              </p>
+              <p>
+                Status: <span style={{ color: "green" }}>{booking.status}</span>
+              </p>
+            </div>
+          );
+        })
+      )}
     </div>
   );
 }

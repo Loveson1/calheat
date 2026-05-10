@@ -11,8 +11,6 @@ export function getOccupancyForDate(date, bookings) {
     const checkIn = normalize(new Date(booking.checkIn));
     const checkOut = normalize(new Date(booking.checkOut));
 
-  
-
     if (target >= checkIn && target < checkOut) {
       occupiedRooms++;
     }

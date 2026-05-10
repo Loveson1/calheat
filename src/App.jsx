@@ -2,17 +2,31 @@ import "./index.css";
 import CalendarGrid from "./components/CalendarGrid";
 import { useState, useEffect } from "react";
 import BookingPanel from "./components/BookingPanel";
+import Stat from "./components/Stats";
 
 function App() {
   // async function for fetching the json data
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [bookings, setBookings] = useState([]);
+
   useEffect(() => {
     async function fetchBook() {
-      const response = await fetch("/bookings.json");
-      const data = await response.json();
-      setBookings(data);
-    }
+      try {
+        setLoading(true);
+        const response = await fetch("/bookings.json");
+        if (!response.ok) {
+          throw new Error("Failed to fetch bookings");
+        }
 
+        const data = await response.json();
+        setBookings(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
     fetchBook();
   }, []);
 
@@ -47,39 +61,107 @@ function App() {
 
     return matchesRoomType && matchesStatus && matchesSource;
   });
+  const currentDate = new Date();
 
+  if (loading) {
+    return (
+      <div className="card">
+        <p className="">Loading data...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="card">
+        <p className="">Failed to load bookings.</p>
+      </div>
+    );
+  }
   return (
     <>
-      <div className="filters">
-        <select
-          value={filters}
-          onChange={(e)=>setFilters((prev) => ({
-            ...prev,
-            roomType: e.target.value,
-          }))}
-        >
-          <option value="all">All Room Types</option>
-          <option value="Standard">Standard</option>
-          <option value="Deluxe">Deluxe</option>
-          <option value="Suite">Suite</option>
-          <option value="Penthouse">Penthouse</option>
-        </select>
-      </div>
-      <CalendarGrid
-        bookings={filteredBookings}
-        selection={selection}
-        setSelection={setSelection}
-        from={from}
-        to={to}
-      />
+      <div className="flex-center mb">
+        <div className="">
+          <b className="">Calheat</b>{" "}
+        </div>
+        <div className="flex-end">
+          <div className="filters">
+            <select
+              value={filters.roomType}
+              onChange={(e) =>
+                setFilters((prev) => ({
+                  ...prev,
+                  roomType: e.target.value,
+                }))
+              }
+            >
+              <option value="all">All Room Types</option>
+              <option value="Standard">Standard</option>
+              <option value="Deluxe">Deluxe</option>
+              <option value="Suite">Suite</option>
+              <option value="Penthouse">Penthouse</option>
+            </select>
+          </div>
 
-      <BookingPanel
-        bookings={filteredBookings}
-        selection={selection}
-        setSelection={setSelection}
-        from={from}
-        to={to}
-      />
+          <div className="">
+            <select
+              value={filters.status}
+              onChange={(e) =>
+                setFilters((prev) => ({
+                  ...prev,
+                  status: e.target.value,
+                }))
+              }
+            >
+              <option value="all">Status</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="checked_out">Checked Out</option>
+            </select>
+          </div>
+
+          <div className="">
+            <select
+              value={filters.source}
+              onChange={(e) =>
+                setFilters((prev) => ({
+                  ...prev,
+                  source: e.target.value,
+                }))
+              }
+            >
+              <option value="all">All Sources</option>
+              <option value="Airbnb">Airbnb</option>
+              <option value="Expedia">Expedia</option>
+              <option value="Booking.com">Booking.com</option>
+              <option value="Agoda">Agoda</option>
+              <option value="Direct">Direct</option>
+              <option value="Walk-in"> Walk-In</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex-40 ">
+        <div className="flex-1">
+          <CalendarGrid
+            className="over"
+            bookings={filteredBookings}
+            selection={selection}
+            setSelection={setSelection}
+            from={from}
+            to={to}
+          />
+        </div>
+        <div className="side-panel-scroll ">
+          <BookingPanel
+            bookings={filteredBookings}
+            selection={selection}
+            setSelection={setSelection}
+            from={from}
+            to={to}
+          />
+        </div>
+      </div>
     </>
   );
 }
