@@ -61,12 +61,11 @@ function App() {
 
     return matchesRoomType && matchesStatus && matchesSource;
   });
-  const currentDate = new Date();
 
   if (loading) {
     return (
       <div className="card">
-        <p className="">Loading data...</p>
+        <p>Loading data...</p>
       </div>
     );
   }
@@ -74,15 +73,15 @@ function App() {
   if (error) {
     return (
       <div className="card">
-        <p className="">Failed to load bookings.</p>
+        <p>Failed to load bookings.</p>
       </div>
     );
   }
   return (
     <>
       <div className="flex-center mb">
-        <div className="">
-          <b className="">Calheat</b>{" "}
+        <div>
+          <b>Calheat</b>
         </div>
         <div className="flex-end">
           <div className="filters">
@@ -94,6 +93,7 @@ function App() {
                   roomType: e.target.value,
                 }))
               }
+              onMouseDown={(e) => e.stopPropagation()}
             >
               <option value="all">All Room Types</option>
               <option value="Standard">Standard</option>
@@ -103,7 +103,7 @@ function App() {
             </select>
           </div>
 
-          <div className="">
+          <div>
             <select
               value={filters.status}
               onChange={(e) =>
@@ -112,6 +112,7 @@ function App() {
                   status: e.target.value,
                 }))
               }
+              onMouseDown={(e) => e.stopPropagation()}
             >
               <option value="all">Status</option>
               <option value="confirmed">Confirmed</option>
@@ -119,7 +120,7 @@ function App() {
             </select>
           </div>
 
-          <div className="">
+          <div>
             <select
               value={filters.source}
               onChange={(e) =>
@@ -128,6 +129,7 @@ function App() {
                   source: e.target.value,
                 }))
               }
+              onMouseDown={(e) => e.stopPropagation()}
             >
               <option value="all">All Sources</option>
               <option value="Airbnb">Airbnb</option>

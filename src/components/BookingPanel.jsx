@@ -58,7 +58,7 @@ export default function BookingPanel({
                 CheckIn:{" "}
                 <span style={{ color: "green" }}>{booking.checkIn}</span> -
                 CheckOut:{" "}
-                <span style={{ color: "green" }}>{booking.checkOut}</span>
+                <span style={{ color: "grey" }}>{booking.checkOut}</span>
               </p>
               <p className="">
                 Night Span:{" "}

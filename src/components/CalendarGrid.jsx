@@ -1,7 +1,8 @@
 import { getCalendarDays } from "../utils/calendar";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getOccupancyForDate } from "../utils/occupancy";
 import { getHeatMapColor } from "../utils/heatmap";
+import { normalize } from "../utils/normalizedDate";
 import Stats from "./Stats";
 
 function CalendarGrid({ bookings, selection, setSelection, from, to }) {
@@ -42,33 +43,52 @@ function CalendarGrid({ bookings, selection, setSelection, from, to }) {
     };
   }, []);
 
-  // logic to calculate monthly revenue
-  const monthStart = new Date(year, month, 1);
-  const monthEnd = new Date(year, month + 1, 0);
+  const calendarRef = useRef(null);
+
+  useEffect(() => {
+    const handleMousedown = (event) => {
+      if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+        setSelection({
+          start: null,
+          end: null,
+          isDragging: false,
+        });
+      }
+    };
+
+    document.addEventListener("mousedown", handleMousedown);
+    return () => {
+      document.removeEventListener("mousedown", handleMousedown);
+    };
+  }, []);
+
+  // logic to get filter for monthly data analysis
+  const monthStart = normalize(new Date(year, month, 1));
+  const monthEnd = normalize(new Date(year, month + 1, 0));
 
   const monthBookings = bookings.filter((booking) => {
     if (booking.status === "cancelled") return false;
-    const checkIn = new Date(booking.checkIn);
-    const checkOut = new Date(booking.checkOut);
+    const checkIn = normalize(new Date(booking.checkIn));
+    const checkOut = normalize(new Date(booking.checkOut));
 
     return checkIn < monthEnd && checkOut > monthStart;
   });
 
   return (
-    <div>
+    <div ref={calendarRef}>
       <Stats bookings={monthBookings} calendarDays={calendarDays} />
 
       <div className="flex-center">
-      <h1>
-        {monthName} {year}
-      </h1>
-      
-      <div className="flex-btw">
-        <button onClick={handlePreviousMonth}> Prev </button>
-        <button onClick={handleToday}>Today</button>
-        <button onClick={handleNextMonth}>Next</button>
+        <h1>
+          {monthName} {year}
+        </h1>
+
+        <div className="flex-btw" >
+          <button onClick={handlePreviousMonth} > Prev </button>
+          <button onClick={handleToday}>Today</button>
+          <button onClick={handleNextMonth}>Next</button>
+        </div>
       </div>
-</div>
 
       <div className="weekdays">
         {weekDays.map((day) => (
@@ -76,7 +96,7 @@ function CalendarGrid({ bookings, selection, setSelection, from, to }) {
         ))}
       </div>
       <hr className="" />
-      <div className="calendar-grid">
+      <div className="calendar-grid" ref={calendarRef}>
         {calendarDays.map((day, index) => {
           const isSelected =
             selection.start &&
@@ -89,7 +109,7 @@ function CalendarGrid({ bookings, selection, setSelection, from, to }) {
             ? "#fde68a"
             : day.isCurrentMonth
               ? getHeatMapColor(occupancy)
-              : "#112f56"
+              : "#112f56";
           return (
             <div
               key={index}

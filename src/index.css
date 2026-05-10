@@ -9,7 +9,7 @@ body {
   margin: 20px;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #f8f8f8;
+  background-color: #f5f5f5;
 }
 
 h1 {
@@ -27,14 +27,15 @@ p {
 
 button {
   border-radius: 8px;
-  padding: 0.6em 1.2em;
+  padding: 0.5em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
   border: solid rgb(17, 47, 86) 1px;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition:all 0.25s;
   outline: none;
+  color: rgb(17, 47, 86)
 }
 button:hover {
   background-color: rgb(220, 235, 255);
